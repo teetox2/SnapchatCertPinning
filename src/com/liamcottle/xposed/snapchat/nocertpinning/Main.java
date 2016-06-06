@@ -11,17 +11,16 @@ public class Main implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
 
-        if(!lpparam.packageName.equals("com.snapchat.android")) {
-            return;
-        }
+        if(lpparam.packageName.equals("com.snapchat.android")) {
 
-        XposedHelpers.findAndHookMethod(TrustManagerFactory.class, "init", KeyStore.class, new XC_MethodHook() {
-            @Override
-            protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                XposedBridge.log("Removed Snapchat's KeyStore! ;)");
-                param.args[0] = null;
-            }
-        });
+            XposedHelpers.findAndHookMethod(TrustManagerFactory.class, "init", KeyStore.class, new XC_MethodHook() {
+                @Override
+                protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+                    param.args[0] = null;
+                }
+            });
+
+        }
 
     }
 
